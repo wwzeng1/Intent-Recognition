@@ -29,13 +29,16 @@ for line in batch_data:
     labels = line[-1]
     all_y.append(labels)
 train_labels = list(set(all_y))
-train_labels = sorted(train_labels)
+train_labels = sorted(train_labels)[1:] # removes the blank label
+
 
 label_dict = dict()
 for idx in range(len(train_labels)):
     label = train_labels[idx]
     label_dict[label] = idx
-all_y = [label_dict[i] for i in all_y]
+
+print(label_dict)
+all_y = [label_dict[i] for i in all_y if i in label_dict]
 
 all_x = np.array([np.array(xi) for xi in all_x], dtype=object)
 all_y = np.array(all_y)
