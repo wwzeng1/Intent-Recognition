@@ -59,7 +59,8 @@ y_array = []
 for idx in range(len(all_y)):
     y_i = all_y[idx]
     x_i = all_x[idx]
-    if y_i in label_dict:
+    # make sure y_i is not blank and x_i is not empty
+    if y_i in label_dict and x_i != []:
         x_i_arr = np.array(x_i)
         x_array.append(x_i_arr)
         y_i_int = label_dict[y_i]
