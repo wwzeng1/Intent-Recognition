@@ -1,7 +1,7 @@
 BATCH_SIZE = 32
 EPOCHS = 400
 vocab_file_path = 'vocab.json'
-WARMUP = 4000
+WARMUP = 16000
 
 em_size = 256
 num_heads = 4

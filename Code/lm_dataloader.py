@@ -1,5 +1,5 @@
 import numpy as np
-import sentencepiece as spm
+#import sentencepiece as spm
 import torch
 from torch.utils.data import DataLoader, Dataset
 class phoneVocab():
@@ -33,11 +33,11 @@ class LMDataLoader(DataLoader):
         while idx < len(self.dataset):
             p = np.random.random_sample()
             if p < 0.95:
-                seqLen = round(np.random.normal(80,10))
+                seqLen = round(np.random.normal(40,10))
             else:
-               seqLen = round(np.random.normal(20, 5))
+               seqLen = round(np.random.normal(10, 5))
             if idx+(seqLen*self.batch_size) <= len(self.dataset):
-                t = self.dataset[idx:idx+(seqLen*self.batch_size)].reshape(self.batch_size,-1)
+                t = self.dataset[idx:idx+(seqLen*self.batch_size)].reshape(self.batch_size,-1).copy()
             else:
                 break
             inputs = []
