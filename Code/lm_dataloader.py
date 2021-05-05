@@ -18,12 +18,13 @@ class phoneVocab():
 
 
 class LMDataLoader(DataLoader):
-    def __init__(self, dataset, batch_size, vocab, shuffle=True):
+    def __init__(self, dataset, batch_size, vocab, shuffle=True, num_workers=4):
         self.dataset = dataset
         self.batch_size = batch_size
         self.shuffle = shuffle
         self.vocab = vocab
         self.num_batches = len(self.dataset) // self.batch_size
+        self.num_workers = num_workers
         
     def __iter__(self):
         

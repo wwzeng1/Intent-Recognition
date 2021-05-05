@@ -1,4 +1,3 @@
-
 import os
 import sys
 import numpy as np
@@ -8,11 +7,11 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader, Dataset
 import torch.optim as optim
 import copy
-import config
-from model import *
-from lm_dataloader import LMDataLoader,phoneVocab
+import Code.config as config
+from Code.model import *
+from Code.lm_dataloader import LMDataLoader,phoneVocab
 import json
-from optim import ScheduledOptim
+from Code.optim import ScheduledOptim
 # Train the model
 
 def train_model(train_loader, model):
@@ -45,7 +44,7 @@ def train_model(train_loader, model):
         # print("backprop done")
         num_batches += 1
 
-        if i % 10 == 0: 
+        if i % 100 == 0: 
             print("Training {}, Loss: {}".format(i, loss.item()))
 
     training_loss /= num_batches
@@ -104,11 +103,11 @@ if __name__ == "__main__":
     device = torch.device("cuda" if cuda else "cpu")
 
     ## Dataloaders
-    with open(config.vocab_file_path,"r") as f:
+    with open('Code/'+config.vocab_file_path,"r") as f:
         vocab_map = json.load(f)
     vocab = phoneVocab(vocab_map)    
-    raw_corpus = np.load("raw_corpus.npy",allow_pickle=True)
-    train_loader = LMDataLoader(dataset=raw_corpus, batch_size=config.BATCH_SIZE, shuffle=True,vocab=vocab)
+    raw_corpus = np.load("Code/raw_corpus.npy",allow_pickle=True)
+    train_loader = LMDataLoader(dataset=raw_corpus, batch_size=config.BATCH_SIZE, shuffle=True,vocab=vocab, num_workers=8)
 
     # Validation dataloader tbd
 
@@ -148,7 +147,7 @@ if __name__ == "__main__":
             # best_accuracy = val_loss
             minloss= training_loss
             best_model = copy.deepcopy(model)
-            torch.save(best_model.state_dict(), "v0.pt")
+            torch.save(best_model.state_dict(), "drive/MyDrive/11785/Project/checkpoint/v0.pt")
             del best_model
         # Print log of accuracy and loss
         print("Epoch: "+str(epoch)+", Training loss: "+str(training_loss))#+", Validation loss:"+str(val_loss)+", Levenstein distance:"+str(ldist)+"\n")
