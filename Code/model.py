@@ -30,8 +30,9 @@ class Model(nn.Module):
         self.embed_src = nn.Embedding(vocab_size,self.embed_size)
         self.linear = nn.Linear(self.embed_size,self.embed_size)
         self.decoder = nn.Sequential(nn.Linear(self.embed_size,self.embed_size),nn.ReLU(),nn.Linear(self.embed_size, vocab_size))
+        self.softmax = nn.LogSoftmax(dim=-1)
         #weight tying
-        self.decoder[2].weight = self.embed_src.weight
+        # self.decoder[2].weight = self.embed_src.weight
         # self.init_weights()
         
     def init_weights(self):
@@ -53,6 +54,8 @@ class Model(nn.Module):
         output = output.permute(1,0,2)
         #expexted nn Linear shape N,*,E
         output = self.decoder(output)
+        output = self.softmax(output)
+        # print(output.shape)
         return output
     
 class PositionalEncoding(nn.Module):

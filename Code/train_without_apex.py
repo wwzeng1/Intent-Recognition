@@ -129,7 +129,7 @@ if __name__ == "__main__":
             nn.init.xavier_uniform_(p)
     model=model.to(device) #.cuda()
     # model.load_state_dict(torch.load("v0.pt"))
-    criterion = nn.CrossEntropyLoss(ignore_index=0)
+    criterion = nn.NLLLoss(ignore_index=0)
 
     optimizer = ScheduledOptim(
         torch.optim.Adam(model.parameters(), betas=(0.9, 0.98), eps=1e-09),
@@ -138,6 +138,7 @@ if __name__ == "__main__":
     epochs = config.EPOCHS
     minloss = sys.maxsize
 
+    val_loss = evaluate_model(train_loader, model)
     for epoch in range(epochs):
         training_loss = train_model(train_loader, model)
         #val_loss = evaluate_model(val_loader, model)
@@ -147,7 +148,7 @@ if __name__ == "__main__":
             # best_accuracy = val_loss
             minloss= training_loss
             best_model = copy.deepcopy(model)
-            torch.save(best_model.state_dict(), "drive/MyDrive/11785/Project/checkpoint/v0.pt")
+            torch.save(best_model.state_dict(), "drive/MyDrive/11785/Project/checkpoint/v1.pt")
             del best_model
         # Print log of accuracy and loss
         print("Epoch: "+str(epoch)+", Training loss: "+str(training_loss))#+", Validation loss:"+str(val_loss)+", Levenstein distance:"+str(ldist)+"\n")

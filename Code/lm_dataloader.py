@@ -34,9 +34,9 @@ class LMDataLoader(DataLoader):
         while idx < len(self.dataset):
             p = np.random.random_sample()
             if p < 0.95:
-                seqLen = round(np.random.normal(40,10))
+                seqLen = round(np.random.normal(20,5))
             else:
-               seqLen = round(np.random.normal(10, 5))
+               seqLen = abs(round(np.random.normal(10, 2)))
             if idx+(seqLen*self.batch_size) <= len(self.dataset):
                 t = self.dataset[idx:idx+(seqLen*self.batch_size)].reshape(self.batch_size,-1).copy()
             else:
@@ -78,7 +78,7 @@ class LMDataLoader(DataLoader):
 
                 # 10% randomly change token to random token
                 elif prob < 0.9:
-                    chars[i] = np.random.randint(0,self.vocab.vocab_size)
+                    chars[i] = np.random.randint(4,self.vocab.vocab_size)
 
                 # 10% randomly change token to current token
                 else:
